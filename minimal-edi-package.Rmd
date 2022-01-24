@@ -1,0 +1,44 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+```{r}
+library(EMLassemblyline)
+library(ediutilities)
+library(here)
+
+excel_to_template(here('nes-lter-minimal-info'), 'nes-lter-minimal', rights='CC0')
+
+data_table <- read.csv(here('nes-lter-minimal.csv'))
+data_table$date = ymd_hms(data_table$date)
+
+```
+```{r}
+
+coverage_dates = as.Date(data_table$date)
+
+coverage <- data_coverage(coverage_dates, data_table$latitude, data_table$longitude)
+
+```
+
+```{r}
+pkg_id <- 'knb-lter-nes.999.1'
+
+make_eml(here(),
+         dataset.title='Demonstration of minimal EDI package',
+         data.table='nes-lter-minimal.csv',
+         data.table.description='Example NES-LTER data',
+         data.table.name = 'Subset of NES-LTER nutrient data',
+         temporal.coverage = c(coverage$startdate, coverage$enddate),
+         geographic.description = "NES-LTER Transect",
+         geographic.coordinates = c(coverage$North, coverage$East, coverage$South, coverage$West),
+         maintenance.description = "ongoing",
+         user.id = "NES",
+         user.domain = "LTER",
+         package.id = pkg_id)
+
+project_insert(pkg_id)
+```
