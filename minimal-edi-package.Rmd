@@ -1,30 +1,46 @@
 ---
-title: "R Notebook"
+title: "Minimal EDI package generated using EMLassemblyline and ediutilities"
+author: "Joe Futrelle"
+date: "2022-01-24"
 output: html_notebook
 ---
 
-
+Libraries used
 
 ```{r}
 library(EMLassemblyline)
 library(ediutilities)
 library(here)
+library(lubridate)
+```
 
-excel_to_template(here('nes-lter-minimal-info'), 'nes-lter-minimal', rights='CC0')
+Read example data table
 
+```{r}
 data_table <- read.csv(here('nes-lter-minimal.csv'))
 data_table$date = ymd_hms(data_table$date)
-
 ```
-```{r}
 
-coverage_dates = as.Date(data_table$date)
+Read the Excel metadata template and generate text templates used by
+EMLassemblyline
+
+```{r}
+excel_to_template(here('nes-lter-minimal-info'), 'nes-lter-minimal', rights='CC0')
+```
+
+Compute spatiotemporal coverage
+
+```{r}
+# FIXME should this datetime -> date conversion happen in ediutilities?
+coverage_dates = as.Date(data_table$date) # coverage is by date with no time info
 
 coverage <- data_coverage(coverage_dates, data_table$latitude, data_table$longitude)
-
 ```
 
+Generate the package and insert the parent project node into the resulting EML
+
 ```{r}
+# use a dummy package ID
 pkg_id <- 'knb-lter-nes.999.1'
 
 make_eml(here(),
