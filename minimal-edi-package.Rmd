@@ -8,6 +8,11 @@ output: html_notebook
 Libraries used
 
 ```{r}
+# two of the required packages are installed from GitHub
+# library(remotes)
+# remotes::install_github("EDIorg/EMLassemblyline")
+# remotes::install_github("WHOIGit/ediutilities")
+
 library(EMLassemblyline)
 library(ediutilities)
 library(here)
