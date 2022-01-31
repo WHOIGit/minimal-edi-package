@@ -32,16 +32,6 @@ EMLassemblyline
 ```{r}
 excel_to_template(here('nes-lter-minimal-info'), 'nes-lter-minimal', rights='CC0')
 ```
-
-Compute spatiotemporal coverage
-
-```{r}
-# FIXME should this datetime -> date conversion happen in ediutilities?
-coverage_dates = as.Date(data_table$date) # coverage is by date with no time info
-
-coverage <- data_coverage(coverage_dates, data_table$latitude, data_table$longitude)
-```
-
 Generate the package and insert the parent project node into the resulting EML
 
 ```{r}
@@ -53,9 +43,9 @@ make_eml(here(),
          data.table='nes-lter-minimal.csv',
          data.table.description='Example NES-LTER data',
          data.table.name = 'Subset of NES-LTER nutrient data',
-         temporal.coverage = c(coverage$startdate, coverage$enddate),
+         temporal.coverage = temporal_coverage(data_table),
          geographic.description = "NES-LTER Transect",
-         geographic.coordinates = c(coverage$North, coverage$East, coverage$South, coverage$West),
+         geographic.coordinates = geographic_coordinates(data_table),
          maintenance.description = "ongoing",
          user.id = "NES",
          user.domain = "LTER",
