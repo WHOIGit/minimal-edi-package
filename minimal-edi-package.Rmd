@@ -26,6 +26,12 @@ data_table <- read.csv(here('nes-lter-minimal.csv'))
 data_table$date = ymd_hms(data_table$date)
 ```
 
+Generate basic summary of data table
+
+```{r}
+summary(data_table)
+```
+
 Read the Excel metadata template and generate text templates used by
 EMLassemblyline
 
