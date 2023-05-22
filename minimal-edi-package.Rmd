@@ -17,7 +17,7 @@ library(EMLassemblyline)
 library(ediutilities)
 library(here)
 library(lubridate)
-library(pandr)
+library(pander)
 ```
 
 Read example data table
